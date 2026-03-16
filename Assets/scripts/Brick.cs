@@ -11,6 +11,7 @@ public class Brick : MonoBehaviour
     Material _orgMaterial;
     Renderer _renderer;
     public GameObject[] propPrefabs;
+    public GameObject explosionEffect;
     void Start()
     {
         transform.Rotate(rotator*(transform.position.x+transform.position.y)*0.1f);//一開始先讓每個磚塊轉(自身的X跟Y座標加起來去乘上0.1f)度
@@ -28,12 +29,13 @@ public class Brick : MonoBehaviour
         hits--;
         if (hits <= 0)
         {
-            if (UnityEngine.Random.Range(0f, 1f) <= 0.8f)
+            if (UnityEngine.Random.Range(0f, 1f) <= 0.2f)
             {
                 int randomIndex=UnityEngine.Random.Range(0,propPrefabs.Length);
                 Instantiate(propPrefabs[randomIndex],transform.position,Quaternion.Euler(0,0,90));
             }
             GameManager.Instance.Score+=points;
+            Instantiate(explosionEffect, transform.position, transform.rotation);
             Destroy(gameObject);
         }
         _renderer.sharedMaterial=hitMaterial;//把材質改為hitMaterial
