@@ -2383,7 +2383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballPrefab: {fileID: 66054575866480450, guid: 9b4bf9eb26eedc549834feebd01262e4, type: 3}
-  playerPrefab: {fileID: 1525694099361404428, guid: b992b343cea37cc4b87bf9448b117cc7, type: 3}
+  playerPrefab: {fileID: 7920573696653086769, guid: 2998aa3f4512340fdb5648bbeddc679c, type: 3}
   scoreText: {fileID: 1215877268}
   ballsText: {fileID: 856501583}
   levelText: {fileID: 2031353692}
