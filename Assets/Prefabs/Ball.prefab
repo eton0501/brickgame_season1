@@ -152,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isClone: 0
   _maxSpeed: 40
+  yOffset: 2.3
 --- !u!82 &-7556299266811361989
 AudioSource:
   m_ObjectHideFlags: 0

@@ -461,7 +461,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: fkyou
+  m_text: GAMEOVER
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2393,8 +2393,14 @@ MonoBehaviour:
   panelLevelCompleted: {fileID: 1953949251}
   panelGameOver: {fileID: 555579692}
   levles:
-  - {fileID: 3460222652544481069, guid: 217e73186f8e8b145984cb568a2dd96d, type: 3}
-  - {fileID: 3460222652544481069, guid: e919e3bee49d9774992e0f54507077b0, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  brickPrefabs:
+  - {fileID: 6711380167873347785, guid: ca9bf5e473d493040a615f987ebdbb7b, type: 3}
+  - {fileID: 6711380167873347785, guid: a3a772aa2ba53ae42bccff389aa7daf4, type: 3}
+  - {fileID: 6711380167873347785, guid: b58b36fd3a4cc334e95cc36c756fae74, type: 3}
+  spacingX: 1.5
+  spacingY: 1
   menuBGM: {fileID: 8300000, guid: fd31e869a31b6e643953dc965e331523, type: 3}
   playBGM: {fileID: 8300000, guid: 386b37713e5a1f040b05bbfd73eb9c91, type: 3}
   gameOverBGM: {fileID: 8300000, guid: 774950e15d503194a8019402e62c8496, type: 3}

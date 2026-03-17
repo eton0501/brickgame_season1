@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using UnityEditorInternal;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +18,9 @@ public class GameManager : MonoBehaviour
     public GameObject panelLevelCompleted;
     public GameObject panelGameOver;
     public GameObject[] levles;
+    public GameObject[] brickPrefabs;
+    public float spacingX=1.5f;
+    public float spacingY=1.0f; 
     public static GameManager Instance{get;private set;}//GameManager:代表這個變數只能裝掛著GameManager腳本的遊戲物件,Instance:為變數名稱(但通常取Instance，這樣就知道是單例模式)
     public enum State{MENU,INIT,PLAY,LEVELCOMPLETED,LOADLEVEL,GAMEOVER}//enum:可以自訂義一個型別而且裡面可以用自己看得懂的東西。State:為變數名稱。
     State _state;//宣告一個State型別的變數
@@ -113,7 +118,8 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    _currentLevel=Instantiate(levles[Level]);//先實例化level再賦值到_currentLevel
+                    _currentLevel=new GameObject("Level_"+Level);
+                    GenerateLevel(Level,_currentLevel.transform);
                     SwitchState(State.PLAY);
                 }
                 break;
@@ -124,6 +130,8 @@ public class GameManager : MonoBehaviour
                     PlayerPrefs.SetInt("highscore",Score);//改變歷史最高分數
                 }
                 panelGameOver.SetActive(true);
+                panelGameOver.transform.localScale=Vector3.zero;
+                panelGameOver.transform.DOScale(Vector3.one,0.6f).SetEase(Ease.OutBack);
                 break;             
         }
     }
@@ -193,5 +201,57 @@ public class GameManager : MonoBehaviour
         _bgmSource.Stop();
         _bgmSource.clip=newClip;
         _bgmSource.Play();    
+    }
+    void GenerateLevel(int currentLevel,Transform levelParent)
+    {
+        int[,] levelMap;
+        if (currentLevel == 0)
+        {
+            levelMap=new int[,]
+            {
+                { 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 2, 1, 1, 1, 2, 0, 0, 0, 0 },
+                { 0, 0, 0, 2, 1, 3, 3, 3, 1, 2, 0, 0, 0 },
+                { 0, 0, 2, 1, 3, 3, 3, 3, 3, 1, 2, 0, 0 },
+                { 0, 2, 1, 3, 3, 1, 1, 1, 3, 3, 1, 2, 0 },
+                { 2, 1, 1, 3, 3, 1, 2, 1, 3, 3, 1, 1, 2 },
+                { 2, 1, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 2 },
+                { 0, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 0 },
+                { 0, 0, 0, 2, 2, 2, 0, 2, 2, 2, 0, 0, 0 },
+                { 0, 0, 2, 2, 0, 0, 0, 0, 0, 2, 2, 0, 0 }
+            };
+        }
+        else
+        {
+            levelMap=new int[,]
+            {
+                { 0, 0, 0, 2, 2, 0, 0, 0 },
+                { 0, 0, 2, 1, 1, 2, 0, 0 },
+                { 0, 2, 1, 0, 0, 1, 2, 0 },
+                { 2, 1, 0, 3, 3, 0, 1, 2 }, 
+                { 2, 1, 0, 3, 3, 0, 1, 2 },
+                { 0, 2, 1, 0, 0, 1, 2, 0 },
+                { 0, 0, 2, 1, 1, 2, 0, 0 },
+                { 0, 0, 0, 2, 2, 0, 0, 0 }
+            };
+        }
+        int rows=levelMap.GetLength(0);
+        int cols=levelMap.GetLength(1);
+        for(int row = 0; row < rows; row++)
+        {
+            for(int col = 0; col < cols; col++)
+            {
+                int brickType=levelMap[row,col];
+                if (brickType>0)
+                {
+                    float posX=(col-(cols/2f))*spacingX;
+                    float posY=5f-(row*spacingY);
+                    Vector3 spawnPosition=new Vector3(posX,posY,0);
+                    GameObject prefabToSpawn=brickPrefabs[brickType-1];
+                    GameObject newBrick=Instantiate(prefabToSpawn,spawnPosition,Quaternion.identity);
+                    newBrick.transform.SetParent(levelParent);
+                }
+            }
+        }
     }
 }

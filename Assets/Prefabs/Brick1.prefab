@@ -123,8 +123,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hits: 1
   points: 100
-  rotator: {x: 45, y: 0, z: 0}
+  rotator: {x: 0, y: 0, z: 0}
   hitMaterial: {fileID: 2100000, guid: ddfe434592ebbc54685bb4432ac20c8e, type: 2}
   propPrefabs:
   - {fileID: 1491172611509731965, guid: 7d6f45775d6287b4a9d22909b3a0c4d0, type: 3}
   - {fileID: 1491172611509731965, guid: 6d8077e38d058dc42b2c6118f0a9a89b, type: 3}
+  explosionEffect: {fileID: 0}
