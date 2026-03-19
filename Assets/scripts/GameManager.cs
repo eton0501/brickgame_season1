@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
     public GameObject panelPlay;
     public GameObject panelLevelCompleted;
     public GameObject panelGameOver;
-    public GameObject[] levles;
     public GameObject[] brickPrefabs;
     public float spacingX=1.5f;
     public float spacingY=1.0f; 
@@ -112,14 +111,14 @@ public class GameManager : MonoBehaviour
                 SwitchState(State.LOADLEVEL,2f);
                 break;
             case State.LOADLEVEL://載入關卡
-                if (Level >= levles.Length)//如果沒有關卡了
+                if (Level >= 2)//如果沒有關卡了
                 {
                     SwitchState(State.GAMEOVER);
                 }
                 else
                 {
                     _currentLevel=new GameObject("Level_"+Level);
-                    GenerateLevel(Level,_currentLevel.transform);
+                    GenerateLevel(Level,_currentLevel.transform);//呼叫關卡生成器
                     SwitchState(State.PLAY);
                 }
                 break;
@@ -130,8 +129,8 @@ public class GameManager : MonoBehaviour
                     PlayerPrefs.SetInt("highscore",Score);//改變歷史最高分數
                 }
                 panelGameOver.SetActive(true);
-                panelGameOver.transform.localScale=Vector3.zero;
-                panelGameOver.transform.DOScale(Vector3.one,0.6f).SetEase(Ease.OutBack);
+                panelGameOver.transform.localScale=Vector3.zero;//先把gameover面板縮小
+                panelGameOver.transform.DOScale(Vector3.one,0.6f).SetEase(Ease.OutBack);//然後用0.6秒的特效放大出現
                 break;             
         }
     }
@@ -196,16 +195,16 @@ public class GameManager : MonoBehaviour
     }
     void PlayMusic(AudioClip newClip)
     {
-        if(newClip==null||_bgmSource.clip==newClip)
+        if(newClip==null||_bgmSource.clip==newClip)//如果沒傳入音樂或是已經在撥放了就直接return
             return;
         _bgmSource.Stop();
         _bgmSource.clip=newClip;
         _bgmSource.Play();    
     }
-    void GenerateLevel(int currentLevel,Transform levelParent)
+    void GenerateLevel(int currentLevel,Transform levelParent)//根據傳入的關卡數字去生成關卡
     {
-        int[,] levelMap;
-        if (currentLevel == 0)
+        int[,] levelMap;//宣告一個二維陣列
+        if (currentLevel == 0)//如果是第一關
         {
             levelMap=new int[,]
             {
@@ -235,21 +234,21 @@ public class GameManager : MonoBehaviour
                 { 0, 0, 0, 2, 2, 0, 0, 0 }
             };
         }
-        int rows=levelMap.GetLength(0);
+        int rows=levelMap.GetLength(0);//取得這個陣列有幾列跟幾行
         int cols=levelMap.GetLength(1);
         for(int row = 0; row < rows; row++)
         {
             for(int col = 0; col < cols; col++)
             {
-                int brickType=levelMap[row,col];
-                if (brickType>0)
+                int brickType=levelMap[row,col];//讀取該格子的數字
+                if (brickType>0)//如果數字大於0
                 {
-                    float posX=(col-(cols/2f))*spacingX;
-                    float posY=5f-(row*spacingY);
-                    Vector3 spawnPosition=new Vector3(posX,posY,0);
-                    GameObject prefabToSpawn=brickPrefabs[brickType-1];
-                    GameObject newBrick=Instantiate(prefabToSpawn,spawnPosition,Quaternion.identity);
-                    newBrick.transform.SetParent(levelParent);
+                    float posX=(col-(cols/2f))*spacingX;//算出磚塊的X座標
+                    float posY=5f-(row*spacingY);//算出y座標
+                    Vector3 spawnPosition=new Vector3(posX,posY,0);//得到應該生成的座標
+                    GameObject prefabToSpawn=brickPrefabs[brickType-1];//根據數字得倒應該生成的磚塊類型
+                    GameObject newBrick=Instantiate(prefabToSpawn,spawnPosition,Quaternion.identity);//生成磚塊
+                    newBrick.transform.SetParent(levelParent);//把磚塊設為關卡的子物件
                 }
             }
         }
